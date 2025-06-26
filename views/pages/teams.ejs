@@ -1,0 +1,105 @@
+<div class="max-w-4xl mx-auto">
+    <% if (!user) { %>
+        <div class="text-center py-12">
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">Erişim Reddedildi</h1>
+            <p class="text-xl text-gray-600 mb-8">Bu sayfayı görüntülemek için giriş yapmalısınız</p>
+            <div class="space-x-4">
+                <a href="/login" class="inline-block bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600">Giriş Yap</a>
+                <a href="/register" class="inline-block bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600">Kayıt Ol</a>
+            </div>
+        </div>
+    <% } else { %>
+        <div class="mb-6">
+            <h1 class="text-3xl font-bold text-gray-100 mb-4">Takımlar</h1>
+            <p class="text-gray-300">Takımlarınızı görüntüleyin ve katılım sağlayın</p>
+        </div>
+
+        <% if (user.role === 'admin') { %>
+        <!-- Takım Oluşturma Kartı - Sadece Adminler Görebilir -->
+        <div class="bg-white rounded-lg shadow p-6 mb-8">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-4">Yeni Takım Oluştur</h2>
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4">
+                <p class="text-sm text-blue-800">Bu bölüm sadece admin yetkisine sahip kullanıcılar tarafından görüntülenebilir.</p>
+            </div>
+            <form id="team-form">
+                <div class="mb-4">
+                    <label for="team-name" class="block text-sm font-medium text-gray-700">Takım Adı</label>
+                    <input type="text" id="team-name" name="name" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900">
+                </div>
+                
+                <div class="mb-4">
+                    <label for="team-description" class="block text-sm font-medium text-gray-700">Açıklama</label>
+                    <textarea id="team-description" name="description" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900"></textarea>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="team-avatar" class="block text-sm font-medium text-gray-700">Avatar URL (İsteğe Bağlı)</label>
+                    <input type="text" id="team-avatar" name="avatar" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900">
+                </div>
+                
+                <div class="flex justify-end">
+                    <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        Takım Oluştur
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Yazılım Şirketleri İçin Örnek Takımlar - Sadece Adminler Görebilir -->
+        <div class="bg-white rounded-lg shadow p-6 mt-8">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-4">Yazılım Şirketi Takım Şablonları</h2>
+            <p class="text-gray-600 mb-4">Aşağıdaki örnek takımlardan birini seçerek hızlıca oluşturabilirsiniz:</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer sample-team" data-name="Frontend Geliştirme Takımı" data-desc="UI bileşenleri, SPA ve frontend mimarisi üzerinde çalışan ekip.">
+                    <h3 class="font-medium text-blue-600">Frontend Geliştirme Takımı</h3>
+                    <p class="text-sm text-gray-600">UI bileşenleri, SPA ve frontend mimarisi üzerinde çalışan ekip.</p>
+                </div>
+                
+                <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer sample-team" data-name="Backend Geliştirme Takımı" data-desc="API, veritabanı ve sunucu tarafı yazılım geliştirme ekibi.">
+                    <h3 class="font-medium text-blue-600">Backend Geliştirme Takımı</h3>
+                    <p class="text-sm text-gray-600">API, veritabanı ve sunucu tarafı yazılım geliştirme ekibi.</p>
+                </div>
+                
+                <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer sample-team" data-name="DevOps Takımı" data-desc="CI/CD, bulut altyapısı ve containerization süreçleri ekibi.">
+                    <h3 class="font-medium text-blue-600">DevOps Takımı</h3>
+                    <p class="text-sm text-gray-600">CI/CD, bulut altyapısı ve containerization süreçleri ekibi.</p>
+                </div>
+                
+                <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer sample-team" data-name="UI/UX Tasarım Takımı" data-desc="Kullanıcı deneyimi, arayüz tasarımı ve kullanılabilirlik testleri ekibi.">
+                    <h3 class="font-medium text-blue-600">UI/UX Tasarım Takımı</h3>
+                    <p class="text-sm text-gray-600">Kullanıcı deneyimi, arayüz tasarımı ve kullanılabilirlik testleri ekibi.</p>
+                </div>
+                
+                <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer sample-team" data-name="Mobil Uygulama Takımı" data-desc="iOS ve Android native uygulama geliştirme ekibi.">
+                    <h3 class="font-medium text-blue-600">Mobil Uygulama Takımı</h3>
+                    <p class="text-sm text-gray-600">iOS ve Android native uygulama geliştirme ekibi.</p>
+                </div>
+                
+                <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer sample-team" data-name="QA ve Test Takımı" data-desc="Yazılım kalitesi, test otomasyonu ve kalite güvence ekibi.">
+                    <h3 class="font-medium text-blue-600">QA ve Test Takımı</h3>
+                    <p class="text-sm text-gray-600">Yazılım kalitesi, test otomasyonu ve kalite güvence ekibi.</p>
+                </div>
+            </div>
+        </div>
+        <% } %>
+
+        <!-- Takımlar Listesi -->
+        <div class="bg-white rounded-lg shadow p-6">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-4">Takımlarınız</h2>
+            <div class="space-y-4" id="teams-container">
+                <div class="text-center text-gray-500">
+                    <p>Takımlar yükleniyor...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kullanıcı rolünü body'e veri özniteliği olarak ekle -->
+        <script>
+            document.body.setAttribute('data-user-role', '<%= user.role %>');
+        </script>
+        
+        <!-- Harici JavaScript dosyasını ekle -->
+        <script src="/js/teams.js"></script>
+    <% } %>
+</div> 

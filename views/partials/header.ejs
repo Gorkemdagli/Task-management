@@ -1,0 +1,105 @@
+<header class="backdrop-blur-md bg-opacity-10 bg-white border-b border-light-border">
+    <nav class="container mx-auto px-6 py-4">
+        <div class="flex justify-between items-center">
+            <div class="flex items-center">
+                <% if (user) { %>
+                <a href="/main" class="text-xl font-bold text-white flex items-center gap-2">
+                    <span class="bg-primary-color px-3 py-1 rounded-lg shadow-lg">GY</span>
+                    Görev Yönetimi
+                </a>
+                <% } else { %>
+                <a href="/" class="text-xl font-bold text-white flex items-center gap-2">
+                    <span class="bg-primary-color px-3 py-1 rounded-lg shadow-lg">GY</span>
+                    Görev Yönetimi
+                </a>
+                <% } %>
+                <% if (user) { %>
+                <div class="ml-8 space-x-4">
+                    <a href="/main" class="text-white px-3 py-2 rounded-lg">Ana Sayfa</a>
+                    <a href="/teams" class="text-white px-3 py-2 rounded-lg">Takımlar</a>
+                    <a href="/tasks" class="text-white px-3 py-2 rounded-lg">Görevler</a>
+                </div>
+                <% } %>
+            </div>
+            
+            <div class="flex items-center space-x-4">
+                <% if (user) { %>
+                    <% if (user.role === 'admin') { %>
+                    <div class="relative dropdown">
+                        <button id="adminDropdownBtn" class="flex items-center space-x-2 bg-purple-500 px-3 py-2 rounded-lg border border-purple-400">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                            </svg>
+                            <span class="text-white">Admin</span>
+                        </button>
+                        <div id="adminDropdownMenu" class="absolute right-0 mt-2 w-48 bg-purple-900 rounded-lg shadow-lg py-2 hidden z-50 border border-purple-700 origin-top-right">
+                            <div class="px-2 py-1 border-b border-purple-700 mb-1">
+                                <span class="text-xs font-medium text-gray-300">Admin Paneli</span>
+                            </div>
+                            <a href="/admin/users" class="block px-4 py-2 text-sm text-white rounded-md mx-1 my-1">
+                                <div class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
+                                    </svg>
+                                    Kullanıcı Yönetimi
+                                </div>
+                            </a>
+                            <a href="/api-docs" class="block px-4 py-2 text-sm text-white rounded-md mx-1 my-1">
+                                <div class="flex items-center">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                    API Dökümentasyonu
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                    <% } %>
+
+                    <div class="relative dropdown">
+                        <div id="userDropdownBtn" class="cursor-pointer flex items-center gap-2">
+                            <div class="flex items-center space-x-2 bg-light-glass px-3 py-2 rounded-lg border border-light-border">
+                                <img src="<%= user.avatar || 'data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0iIzRCNUY4MyIgd2lkdGg9IjI0cHgiIGhlaWdodD0iMjRweCI+PHBhdGggZD0iTTEyIDJDNi40OCAyIDIgNi40OCAyIDEyczQuNDggMTAgMTAgMTAgMTAtNC40OCAxMC0xMFMxNy41MiAyIDEyIDJ6bTAgM2MyLjY3IDAgOCA1LjMxIDggMTIgMCAuOS0uMzQgMS4yNy0uODIgMS4yN2gtMTQuMzZjLS40OSAwLS44Mi0uMzctLjgyLTEuMjdDNCAxMC4zMSA5LjMzIDUgMTIgNXptMCAyYy0xLjk5IDAtMy42NiAxLjM0LTQuMiAzLjIgMS42Mi42OCAyLjk3IDEuOTcgMy44MSAzLjYgMS4wMS4wOSAyIC4xNSAyLjk1LjE1Ljk0IDAgMS44Ni0uMDYgMi43NS0uMTUuODQtMS42NCAyLjE5LTIuOTMgMy44MS0zLjYtLjU0LTEuODctMi4yMS0zLjItNC4yLTMuMmgtMi45MnoiLz48L3N2Zz4=' %>"
+                                    alt="<%= user.name %>" 
+                                    class="w-8 h-8 rounded-full border-2 border-white shadow-md">
+                                <span class="text-white"><%= user.name %></span>
+                            </div>
+                            
+                            <div id="userDropdownMenu" class="absolute right-0 top-full mt-2 w-48 bg-gray-800 rounded-lg shadow-xl py-2 hidden z-50 border border-gray-700 origin-top-right">
+                                <div class="px-2 py-1 border-b border-gray-700 mb-1">
+                                    <span class="text-xs font-medium text-gray-300">Kullanıcı Menüsü</span>
+                                </div>
+                                <a href="/profile" class="block px-4 py-2 text-sm text-white rounded-md mx-1 my-1">
+                                    <i class="fas fa-user mr-2"></i>Profil
+                                </a>
+                                <a href="/teams" class="block px-4 py-2 text-sm text-white rounded-md mx-1 my-1">
+                                    <i class="fas fa-users mr-2"></i>Takımlarım
+                                </a>
+                                <a href="/tasks" class="block px-4 py-2 text-sm text-white rounded-md mx-1 my-1">
+                                    <i class="fas fa-tasks mr-2"></i>Görevlerim
+                                </a>
+                                <div class="border-t border-gray-700 mt-1 pt-1">
+                                    <form action="/logout" method="POST" class="block mx-1 my-1">
+                                        <button type="submit" class="w-full text-left px-4 py-2 text-sm text-red-600 rounded-md">
+                                            <i class="fas fa-sign-out-alt mr-2"></i>Çıkış Yap
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% } else { %>
+                    <a href="/login" class="bg-gradient-to-r from-primary-color to-secondary-color text-white px-5 py-2 rounded-lg hover:shadow-lg 
+                    transition-all hover:-translate-y-1">Giriş Yap</a>
+                    <a href="/register" class="bg-gray-600 text-white px-5 py-2 rounded-lg hover:shadow-lg transition-all 
+                    hover:-translate-y-1">Kayıt Ol</a>
+                <% } %>
+            </div>
+        </div>
+    </nav>
+    
+    <% if (user) { %>
+    <!-- Harici JavaScript dosyasını ekle -->
+    <script src="/js/header.js"></script>
+    <% } %>
+</header> 

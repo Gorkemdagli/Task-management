@@ -1,0 +1,186 @@
+<div class="max-w-4xl mx-auto">
+    <% if (!user) { %>
+        <div class="text-center py-12">
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">Erişim Reddedildi</h1>
+            <p class="text-xl text-gray-600 mb-8">Bu sayfayı görüntülemek için giriş yapmalısınız</p>
+            <div class="space-x-4">
+                <a href="/login" class="inline-block bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600">Giriş Yap</a>
+                <a href="/register" class="inline-block bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600">Kayıt Ol</a>
+            </div>
+        </div>
+    <% } else { %>
+        <div class="mb-6">
+            <h1 class="text-3xl font-bold text-gray-100 mb-4">Görevler</h1>
+            <p class="text-gray-300">Görevlerinizi görüntüleyin ve yönetin</p>
+        </div>
+
+        <% if (user.role === 'admin') { %>
+        <!-- Görev Oluşturma Kartı - Sadece Adminler Görebilir -->
+        <div class="bg-white rounded-lg shadow p-6 mb-8">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-4">Yeni Görev Oluştur</h2>
+            <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mb-4">
+                <p class="text-sm text-blue-800">Bu bölüm sadece admin yetkisine sahip kullanıcılar tarafından görüntülenebilir.</p>
+            </div>
+            <form id="task-form" onsubmit="return !isSubmitting">
+                <div class="mb-4">
+                    <label for="task-title" class="block text-sm font-medium text-gray-700">Görev Başlığı</label>
+                    <input type="text" id="task-title" name="title" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900">
+                </div>
+                
+                <div class="mb-4">
+                    <label for="task-description" class="block text-sm font-medium text-gray-700">Açıklama</label>
+                    <textarea id="task-description" name="description" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900"></textarea>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="task-status" class="block text-sm font-medium text-gray-700">Durum</label>
+                        <select id="task-status" name="status" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900">
+                            <option value="todo">Yapılacak</option>
+                            <option value="doing">Yapılıyor</option>
+                            <option value="done">Tamamlandı</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="task-priority" class="block text-sm font-medium text-gray-700">Öncelik</label>
+                        <select id="task-priority" name="priority" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900">
+                            <option value="low">Düşük</option>
+                            <option value="medium">Orta</option>
+                            <option value="high">Yüksek</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="task-team" class="block text-sm font-medium text-gray-700">Takım</label>
+                        <select id="task-team" name="teamId" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900">
+                            <option value="">Takım Seçin</option>
+                            <!-- JavaScript ile doldurulacak -->
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label for="task-assignee" class="block text-sm font-medium text-gray-700">Atanan Kişi</label>
+                        <select id="task-assignee" name="assignee" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900">
+                            <option value="">Atanan Kişi Seçin</option>
+                            <!-- JavaScript ile doldurulacak -->
+                        </select>
+                    </div>
+                    
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="task-due-date" class="block text-sm font-medium text-gray-700">Son Tarih</label>
+                        <input type="date" id="task-due-date" name="dueDate" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900">
+                    </div>
+                </div>
+                
+                <div class="flex justify-end">
+                    <button type="submit" id="task-submit-btn" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        Görev Oluştur
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- Görev Şablonları - Sadece Adminler Görebilir -->
+        <div class="bg-white rounded-lg shadow p-6 mt-8 mb-8">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-4">Görev Şablonları</h2>
+            <p class="text-gray-600 mb-4">Aşağıdaki örnek görevlerden birini seçerek hızlıca oluşturabilirsiniz:</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer sample-task" 
+                     data-title="Frontend Hata Düzeltmesi" 
+                     data-desc="UI bileşenlerindeki hataların düzeltilmesi ve arayüz iyileştirmeleri."
+                     data-priority="high"
+                     data-status="todo">
+                    <h3 class="font-medium text-blue-600">Frontend Hata Düzeltmesi</h3>
+                    <p class="text-sm text-gray-600">UI bileşenlerindeki hataların düzeltilmesi ve arayüz iyileştirmeleri.</p>
+                </div>
+                
+                <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer sample-task" 
+                     data-title="API Geliştirmesi" 
+                     data-desc="Yeni API endpoint'lerinin geliştirilmesi ve mevcut API'lerin optimizasyonu."
+                     data-priority="medium"
+                     data-status="todo">
+                    <h3 class="font-medium text-blue-600">API Geliştirmesi</h3>
+                    <p class="text-sm text-gray-600">Yeni API endpoint'lerinin geliştirilmesi ve mevcut API'lerin optimizasyonu.</p>
+                </div>
+                
+                <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer sample-task" 
+                     data-title="Dokümantasyon" 
+                     data-desc="Mevcut kodların ve API'lerin dokümantasyonunun hazırlanması."
+                     data-priority="low"
+                     data-status="todo">
+                    <h3 class="font-medium text-blue-600">Dokümantasyon</h3>
+                    <p class="text-sm text-gray-600">Mevcut kodların ve API'lerin dokümantasyonunun hazırlanması.</p>
+                </div>
+                
+                <div class="p-4 border border-gray-200 rounded-lg hover:bg-gray-50 cursor-pointer sample-task" 
+                     data-title="Test Yazılması" 
+                     data-desc="Birim testleri ve entegrasyon testlerinin yazılması."
+                     data-priority="medium"
+                     data-status="todo">
+                    <h3 class="font-medium text-blue-600">Test Yazılması</h3>
+                    <p class="text-sm text-gray-600">Birim testleri ve entegrasyon testlerinin yazılması.</p>
+                </div>
+            </div>
+        </div>
+        <% } %>
+
+        <!-- Görev Filtreleri -->
+        <div class="bg-white rounded-lg shadow p-4 mb-6">
+            <div class="flex flex-wrap gap-4">
+                <div>
+                    <label for="filter-team" class="block text-sm font-medium text-gray-700 mb-1">Takım</label>
+                    <select id="filter-team" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900">
+                        <option value="">Tüm Takımlar</option>
+                        <!-- JavaScript ile doldurulacak -->
+                    </select>
+                </div>
+                
+                <div>
+                    <label for="filter-status" class="block text-sm font-medium text-gray-700 mb-1">Durum</label>
+                    <select id="filter-status" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900">
+                        <option value="">Tüm Durumlar</option>
+                        <option value="todo">Yapılacak</option>
+                        <option value="doing">Yapılıyor</option>
+                        <option value="done">Tamamlandı</option>
+                    </select>
+                </div>
+                
+                <div>
+                    <label for="filter-priority" class="block text-sm font-medium text-gray-700 mb-1">Öncelik</label>
+                    <select id="filter-priority" class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900">
+                        <option value="">Tüm Öncelikler</option>
+                        <option value="low">Düşük</option>
+                        <option value="medium">Orta</option>
+                        <option value="high">Yüksek</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <!-- Görevler Listesi -->
+        <div class="bg-white rounded-lg shadow p-6">
+            <h2 class="text-2xl font-semibold text-gray-900 mb-4">Görevleriniz</h2>
+            <div class="space-y-4" id="tasks-container">
+                <div class="text-center text-gray-500">
+                    <p>Görevler yükleniyor...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kullanıcı rolünü body'e veri özniteliği olarak ekle -->
+        <script>
+            document.body.setAttribute('data-user-role', '<%= user.role %>');
+            document.body.setAttribute('data-user-id', '<%= user._id %>');
+        </script>
+        
+        <!-- Harici JavaScript dosyasını ekle -->
+        <script src="/js/tasks.js"></script>
+    <% } %>
+</div> 

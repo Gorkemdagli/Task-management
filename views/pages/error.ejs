@@ -1,0 +1,121 @@
+<!-- Ana container -->
+<div class="min-h-screen bg-gradient-to-b from-primary-color to-accent-color py-12 px-4">
+    <div class="max-w-3xl mx-auto bg-white bg-opacity-10 backdrop-blur-lg rounded-2xl shadow-xl p-8 border border-light-border">
+        <div class="text-center">
+            <!-- Hata ikonu -->
+            <div class="relative mb-8 mx-auto w-32 h-32">
+                <div class="absolute inset-0 bg-primary-color opacity-20 rounded-full animate-ping"></div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-32 w-32 mx-auto text-white relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+            </div>
+
+            <!-- Hata başlığı -->
+            <h1 class="text-4xl font-bold text-white mb-4">Oops! Bir Hata Oluştu</h1>
+            
+            <!-- Hata mesajı -->
+            <div class="bg-white bg-opacity-20 backdrop-blur-md p-6 rounded-xl shadow-inner mb-8">
+                <p class="text-xl text-white opacity-90 font-medium"><%= error || 'İşleminiz gerçekleştirilemedi. Lütfen daha sonra tekrar deneyiniz.' %></p>
+                <% if (status) { %>
+                    <p class="text-accent-color font-mono mt-3">Hata Kodu: <%= status %></p>
+                <% } %>
+            </div>
+            
+            <!-- Kod hatası ise ve stack trace varsa (sadece geliştirme ortamında göster) -->
+            <% if (stack && process.env.NODE_ENV === 'development') { %>
+                <div class="bg-white bg-opacity-10 p-4 rounded-lg mt-4 mb-8 text-left overflow-auto max-h-48 scrollbar">
+                    <h3 class="text-white text-lg font-semibold mb-2">Hata Detayları:</h3>
+                    <pre class="text-xs text-white opacity-80 font-mono"><%= stack %></pre>
+                </div>
+            <% } %>
+
+            <!-- Aksion butonları -->
+            <div class="flex flex-wrap justify-center gap-4 mt-6">
+                <a href="/" class="transition duration-300 transform hover:scale-105 inline-block bg-primary-color text-white px-6 py-3 rounded-lg hover:bg-opacity-90">
+                    <div class="flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                        </svg>
+                        Ana Sayfa
+                    </div>
+                </a>
+                
+                <% if (user) { %>
+                    <a href="/tasks" class="transition duration-300 transform hover:scale-105 inline-block bg-secondary-color text-white px-6 py-3 rounded-lg hover:bg-opacity-90">
+                        <div class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                            </svg>
+                            Görevlere Dön
+                        </div>
+                    </a>
+                <% } else { %>
+                    <a href="/login" class="transition duration-300 transform hover:scale-105 inline-block bg-secondary-color text-white px-6 py-3 rounded-lg hover:bg-opacity-90">
+                        <div class="flex items-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                            </svg>
+                            Giriş Yap
+                        </div>
+                    </a>
+                <% } %>
+                
+                <button onclick="window.history.back()" class="transition duration-300 transform hover:scale-105 inline-block bg-white bg-opacity-20 text-white px-6 py-3 rounded-lg hover:bg-opacity-30">
+                    <div class="flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                        Geri Dön
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Yardımcı bilgi -->
+    <div class="mt-8 text-center text-white text-opacity-70 text-sm max-w-xl mx-auto">
+        <p>Sorun devam ederse, lütfen <a href="mailto:support@example.com" class="underline hover:text-white">destek ekibimize</a> başvurun.</p>
+        <p class="mt-1">Referans kodu: <%= Date.now().toString(36) %></p>
+    </div>
+</div>
+
+<!-- Stil tanımları -->
+<style>
+    .scrollbar::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+    }
+    
+    .scrollbar::-webkit-scrollbar-track {
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 100px;
+    }
+    
+    .scrollbar::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.3);
+        border-radius: 100px;
+    }
+    
+    .scrollbar::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.5);
+    }
+    
+    @keyframes pulse {
+        0% {
+            transform: scale(0.95);
+            opacity: 0.5;
+        }
+        70% {
+            transform: scale(1.1);
+            opacity: 0.75;
+        }
+        100% {
+            transform: scale(0.95);
+            opacity: 0.5;
+        }
+    }
+    
+    .animate-pulse-custom {
+        animation: pulse 2s infinite;
+    }
+</style> 

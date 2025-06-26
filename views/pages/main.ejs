@@ -1,0 +1,162 @@
+<!-- Ana container -->
+<div class="min-h-screen bg-gradient-to-b from-primary-color to-accent-color">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Giriş yapmış kullanıcılar için -->
+        
+        <!-- Özet Bilgiler -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <!-- Takımlar -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-2xl font-semibold text-gray-900 mb-4">Takımlarım</h2>
+                <div class="space-y-4" id="teams-list">
+                    <!-- Takımlar buraya dinamik olarak yüklenecek -->
+                    <div class="text-center text-gray-500">
+                        <p>Takımlar yükleniyor...</p>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <a href="/teams" class="text-blue-500 hover:text-blue-600">Tüm takımları görüntüle →</a>
+                </div>
+            </div>
+
+            <!-- Görevler -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-2xl font-semibold text-gray-900 mb-4">Son Görevlerim</h2>
+                <div class="space-y-4" id="tasks-list">
+                    <!-- Görevler buraya dinamik olarak yüklenecek -->
+                    <div class="text-center text-gray-500">
+                        <p>Görevler yükleniyor...</p>
+                    </div>
+                </div>
+                <div class="mt-4">
+                    <a href="/tasks" class="text-blue-500 hover:text-blue-600">Tüm görevleri görüntüle →</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Görev Kartları -->
+        <div class="bg-gradient-to-br from-blue-600 via-blue-500 to-blue-400 p-4 rounded-lg shadow-lg">
+            <div class="flex flex-col md:flex-row gap-4">
+                <!-- Yapılacak Sütunu -->
+                <div class="task-column">
+                    <div class="task-header">
+                        <h2 class="task-title">Yapılacak</h2>
+                        
+                    </div>
+                    <div id="todo-tasks" class="task-list" data-status="todo">
+                        <!-- Burada yapılacak görevler dinamik olarak listelenecek -->
+                        <div class="task-card">
+                            <div class="task-indicator task-indicator-todo"></div>
+                            <h3 class="task-name">Ana sayfa tasarımını oluştur</h3>
+                            <div class="task-meta">
+                                <div class="task-stats">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="add-task-button" id="add-todo-task">+ Kart ekle</button>
+                </div>
+
+                <!-- Yapılıyor Sütunu -->
+                <div class="task-column">
+                    <div class="task-header">
+                        <h2 class="task-title">Yapılıyor</h2>
+                        
+                    </div>
+                    <div id="doing-tasks" class="task-list" data-status="doing">
+                        <!-- Burada yapılmakta olan görevler dinamik olarak listelenecek -->
+                        <div class="task-card">
+                            <div class="task-indicator task-indicator-doing"></div>
+                            <h3 class="task-name">Kimlik doğrulama sistemini uygula</h3>
+                        </div>
+                    </div>
+                    <button class="add-task-button" id="add-doing-task">+ Kart ekle</button>
+                </div>
+
+                <!-- Tamamlandı Sütunu -->
+                <div class="task-column">
+                    <div class="task-header">
+                        <h2 class="task-title">Tamamlandı</h2>
+                        
+                    </div>
+                    <div id="done-tasks" class="task-list" data-status="done">
+                        <!-- Burada tamamlanmış görevler dinamik olarak listelenecek -->
+                        <div class="task-card">
+                            <div class="task-indicator task-indicator-done"></div>
+                            <h3 class="task-name">Proje dokümantasyonunu oluştur</h3>
+                        </div>
+                    </div>
+                    <button class="add-task-button" id="add-done-task">+ Kart ekle</button>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
+    </div>
+</div>
+    
+<!-- Görev Ekleme Modalı -->
+<div id="task-modal" class="fixed inset-0 bg-gray-600 bg-opacity-50 z-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-lg shadow-xl p-6 w-full max-w-md">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-xl font-semibold text-gray-900" id="modal-title">Yeni Görev Ekle</h3>
+            <button type="button" id="close-modal" class="text-gray-400 hover:text-gray-500 focus:outline-none">
+                <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+        </div>
+        <form id="task-form">
+            <input type="hidden" id="task-status" name="status" value="todo">
+            
+            <div class="mb-4">
+                <label for="task-title" class="block text-sm font-medium text-gray-700">Başlık</label>
+                <input type="text" id="task-title" name="title" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900">
+            </div>
+            
+            <div class="mb-4">
+                <label for="task-description" class="block text-sm font-medium text-gray-700">Açıklama</label>
+                <textarea id="task-description" name="description" rows="3" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900"></textarea>
+            </div>
+            
+            <div class="mb-4">
+                <label for="task-priority" class="block text-sm font-medium text-gray-700">Öncelik</label>
+                <select id="task-priority" name="priority" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900">
+                    <option value="low">Düşük</option>
+                    <option value="medium" selected>Orta</option>
+                    <option value="high">Yüksek</option>
+                </select>
+            </div>
+            
+            <div class="mb-4">
+                <label for="task-dueDate" class="block text-sm font-medium text-gray-700">Bitiş Tarihi</label>
+                <input type="date" id="task-dueDate" name="dueDate" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900">
+            </div>
+            
+            <div class="mb-4">
+                <label for="task-team" class="block text-sm font-medium text-gray-700">Takım</label>
+                <select id="task-team" name="teamId" required class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900">
+                    <option value="">Takım Seçin</option>
+                    <!-- Takımlar dinamik olarak doldurulacak -->
+                </select>
+            </div>
+            
+            <div class="mb-4">
+                <label for="task-assignee" class="block text-sm font-medium text-gray-700">Atanan Kişi</label>
+                <select id="task-assignee" name="assignee" class="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 text-gray-900">
+                    <option value="">Atanan Kişi Seçin</option>
+                    <!-- Takım seçildiğinde kullanıcılar dinamik olarak doldurulacak -->
+                </select>
+            </div>
+            
+            <div class="flex justify-end space-x-3">
+                <button type="button" id="cancel-task" class="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500">
+                    İptal
+                </button>
+                <button type="submit" class="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    Kaydet
+                </button>
+            </div>
+        </form>
+    </div>
+</div> 

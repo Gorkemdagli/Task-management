@@ -1,0 +1,230 @@
+<div class="max-w-4xl mx-auto">
+    <% if (!user) { %>
+        <div class="text-center py-12">
+            <h1 class="text-4xl font-bold text-gray-900 mb-4">Erişim Reddedildi</h1>
+            <p class="text-xl text-gray-600 mb-8">Bu sayfayı görüntülemek için giriş yapmalısınız</p>
+            <div class="space-x-4">
+                <a href="/login" class="inline-block bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600">Giriş Yap</a>
+                <a href="/register" class="inline-block bg-gray-500 text-white px-6 py-3 rounded-lg hover:bg-gray-600">Kayıt Ol</a>
+            </div>
+        </div>
+    <% } else { %>
+        <!-- Görev Başlığı -->
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h1 class="text-3xl font-bold text-gray-100"><%= task.title %></h1>
+                <p class="text-gray-300"><%= task.description || 'Açıklama yok' %></p>
+            </div>
+            <div>
+                <a href="/tasks" class="text-gray-300 hover:text-white mr-4">← Görevlere Dön</a>
+                <% if (user.role === 'admin') { %>
+                    <button id="edit-task-btn" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Görevi Düzenle</button>
+                <% } %>
+            </div>
+        </div>
+
+        <!-- Görev Detayları -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="md:col-span-2">
+                <!-- Görev Özeti -->
+                <div class="bg-white rounded-lg shadow p-6 mb-6">
+                    <h2 class="text-2xl font-semibold text-gray-900 mb-4">Görev Bilgileri</h2>
+                    <div class="space-y-4">
+                        <div>
+                            <p class="text-sm text-gray-500">Başlık</p>
+                            <p class="text-gray-800 font-medium"><%= task.title %></p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Açıklama</p>
+                            <p class="text-gray-800"><%= task.description || 'Açıklama yok' %></p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Durum</p>
+                            <div class="flex items-center mt-1">
+                                <% 
+                                    let statusColor = '';
+                                    let statusText = '';
+                                    
+                                    switch(task.status) {
+                                        case 'todo':
+                                            statusColor = 'bg-yellow-100 text-yellow-800';
+                                            statusText = 'Yapılacak';
+                                            break;
+                                        case 'doing':
+                                            statusColor = 'bg-blue-100 text-blue-800';
+                                            statusText = 'Yapılıyor';
+                                            break;
+                                        case 'done':
+                                            statusColor = 'bg-green-100 text-green-800';
+                                            statusText = 'Tamamlandı';
+                                            break;
+                                    }
+                                %>
+                                <span class="px-2 py-1 rounded-full text-sm <%= statusColor %>"><%= statusText %></span>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Öncelik</p>
+                            <div class="flex items-center mt-1">
+                                <% 
+                                    let priorityColor = '';
+                                    let priorityText = '';
+                                    
+                                    switch(task.priority) {
+                                        case 'low':
+                                            priorityColor = 'bg-gray-100 text-gray-800';
+                                            priorityText = 'Düşük';
+                                            break;
+                                        case 'medium':
+                                            priorityColor = 'bg-blue-100 text-blue-800';
+                                            priorityText = 'Orta';
+                                            break;
+                                        case 'high':
+                                            priorityColor = 'bg-red-100 text-red-800';
+                                            priorityText = 'Yüksek';
+                                            break;
+                                    }
+                                %>
+                                <span class="px-2 py-1 rounded-full text-sm <%= priorityColor %>"><%= priorityText %></span>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Oluşturan</p>
+                            <div class="flex items-center mt-1">
+                                <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(task.creator.name) %>" alt="<%= task.creator.name %>" class="w-8 h-8 rounded-full mr-2">
+                                <span class="text-gray-800"><%= task.creator.name %></span>
+                            </div>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Takım</p>
+                            <p class="text-gray-800"><%= task.team.name %></p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Atananlar</p>
+                            <p class="text-gray-800"><% task.assignees.forEach(assignee => { %>
+                             <%= assignee.name %> ,
+                            <% }) %></p>
+                        </div>
+                        <% if (task.dueDate) { %>
+                        <div>
+                            <p class="text-sm text-gray-500">Son Tarih</p>
+                            <p class="text-gray-800"><%= new Date(task.dueDate).toLocaleDateString('tr-TR', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+                        </div>
+                        <% } %>
+                        <div>
+                            <p class="text-sm text-gray-500">Oluşturulma Tarihi</p>
+                            <p class="text-gray-800"><%= new Date(task.createdAt).toLocaleDateString('tr-TR', { year: 'numeric', month: 'long', day: 'numeric' }) %></p>
+                        </div>
+                        <div>
+                            <p class="text-sm text-gray-500">Görüntülenme</p>
+                            <p class="text-gray-800"><%= task.views %> kez görüntülendi</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Görev Aktivitesi -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-2xl font-semibold text-gray-900">Görev Yorumları</h2>
+                        <button id="new-comment-btn" class="text-blue-600 hover:text-blue-800">+ Yorum Ekle</button>
+                    </div>
+                    <div id="task-comments" class="space-y-4">
+                        <div class="text-center text-gray-500 py-4">
+                            <p>Henüz yorum yok</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <!-- Görevliler -->
+                <div class="bg-white rounded-lg shadow p-6">
+                    <div class="flex justify-between items-center mb-4">
+                        <h2 class="text-xl font-semibold text-gray-900">Görevliler (<%= task.assignees.length %>)</h2>
+                        <% if (user.role === 'admin') { %>
+                            <button id="add-assignee-btn" class="text-blue-600 hover:text-blue-800">+ Ekle</button>
+                        <% } %>
+                    </div>
+                    <div class="space-y-3">
+                        <% if (task.assignees && task.assignees.length > 0) { %>
+                            <% task.assignees.forEach(assignee => { %>
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <img src="<%= assignee.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(assignee.name)}` %>" 
+                                             alt="<%= assignee.name %>" 
+                                             class="w-8 h-8 rounded-full mr-2">
+                                        <div>
+                                            <p class="text-gray-800 font-medium"><%= assignee.name %></p>
+                                            <p class="text-gray-500 text-sm"><%= assignee.email %></p>
+                                        </div>
+                                    </div>
+                                    <% if (user.role === 'admin' && String(assignee._id) !== String(task.creator._id)) { %>
+                                        <button class="remove-assignee-btn text-red-500 hover:text-red-700" data-id="<%= assignee._id %>">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                                            </svg>
+                                        </button>
+                                    <% } %>
+                                </div>
+                            <% }) %>
+                        <% } else { %>
+                            <div class="text-center text-gray-500 py-2">
+                                <p>Henüz görevli atanmamış</p>
+                            </div>
+                        <% } %>
+                    </div>
+                </div>
+
+                <!-- Görev Durumu Değiştirme -->
+                <div class="bg-white rounded-lg shadow p-6 mt-6 status-buttons-container">
+                    <h2 class="text-xl font-semibold text-gray-900 mb-4">Görev Durumunu Değiştir</h2>
+                    <div class="flex flex-col gap-4">
+                        <button id="status-todo-btn" class="w-full py-2 px-4 text-sm font-medium rounded-md <%= task.status === 'todo' ? 'bg-yellow-500 text-white' : 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200' %>">
+                            Yapılacak
+                        </button>
+                        <button id="status-doing-btn" class="w-full py-2 px-4 text-sm font-medium rounded-md <%= task.status === 'doing' ? 'bg-blue-500 text-white' : 'bg-blue-100 text-blue-800 hover:bg-blue-200' %>">
+                            Yapılıyor
+                        </button>
+                        <button id="status-done-btn" class="w-full py-2 px-4 text-sm font-medium rounded-md <%= task.status === 'done' ? 'bg-green-500 text-white' : 'bg-green-100 text-green-800 hover:bg-green-200' %>">
+                            Tamamlandı
+                        </button>
+                        
+                        <!-- Silme Butonu -->
+                        <button id="delete-task-btn" class="w-full py-2 px-4 mt-4 text-sm font-medium rounded-md bg-red-100 text-red-800 hover:bg-red-500 hover:text-white transition-all">
+                            Görevi Sil
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kullanıcı ID ve görev ID'sini body'e veri özniteliği olarak ekle -->
+        <%
+            // EJS içinde isAssigned değişkenini hesaplama
+            let isAssigned = false;
+            if (task.assignees && task.assignees.length > 0) {
+                isAssigned = task.assignees.some(function(assignee) {
+                    return String(assignee._id) === String(user._id);
+                });
+            }
+            // Kullanıcı aynı zamanda görevin yaratıcısı ise de atanmış sayılır
+            if (task.creator && String(task.creator._id) === String(user._id)) {
+                isAssigned = true;
+            }
+        %>
+        <script>
+            document.body.setAttribute('data-task-id', '<%= task._id %>');
+            document.body.setAttribute('data-user-id', '<%= user._id %>');
+            document.body.setAttribute('data-user-role', '<%= user.role %>');
+            document.body.setAttribute('data-is-assigned', '<%= isAssigned %>');
+            
+            console.log('Kullanıcı atanmış mı:', '<%= isAssigned %>');
+            console.log('Kullanıcı rolü:', '<%= user.role %>');
+            console.log('Kullanıcı ID:', '<%= user._id %>');
+            console.log('Görev ID:', '<%= task._id %>');
+        </script>
+        
+        <!-- Harici JavaScript dosyasını ekle -->
+        <script src="/js/task-detail.js"></script>
+    <% } %>
+</div> 

@@ -1,0 +1,83 @@
+<div class="min-h-screen flex items-center justify-center">
+    <div class="auth-container p-8 rounded-lg shadow-lg max-w-md w-full">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold auth-title">Kayıt Ol</h2>
+            <p class="mt-2 auth-subtitle">Görev yönetim sistemine katılın</p>
+        </div>
+        
+        <form class="space-y-6" action="/register" method="POST">
+            <% if (locals.error) { %>
+                <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                    <span class="block sm:inline"><%= error %></span>
+                </div>
+            <% } %>
+
+            <div>
+                <label class="block text-sm font-semibold mb-2 auth-label" for="fullName">
+                    Ad Soyad
+                </label>
+                <input type="text" id="fullName" name="fullName" 
+                    class="w-full px-4 py-2 rounded-lg focus:outline-none auth-input"
+                    placeholder="Ad Soyad" required>
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold mb-2 auth-label" for="username">
+                    Kullanıcı Adı
+                </label>
+                <input type="text" id="username" name="username" 
+                    class="w-full px-4 py-2 rounded-lg focus:outline-none auth-input"
+                    placeholder="kullanici_adi" required>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-semibold mb-2 auth-label" for="email">
+                    E-posta
+                </label>
+                <input type="email" id="email" name="email" 
+                    class="w-full px-4 py-2 rounded-lg focus:outline-none auth-input"
+                    placeholder="ornek@email.com" required>
+            </div>
+            
+            <div>
+                <label class="block text-sm font-semibold mb-2 auth-label" for="password">
+                    Şifre
+                </label>
+                <input type="password" id="password" name="password" 
+                    class="w-full px-4 py-2 rounded-lg focus:outline-none auth-input"
+                    placeholder="••••••••" required>
+            </div>
+
+            <div>
+                <label class="block text-sm font-semibold mb-2 auth-label" for="confirmPassword">
+                    Şifre Tekrar
+                </label>
+                <input type="password" id="confirmPassword" name="confirmPassword" 
+                    class="w-full px-4 py-2 rounded-lg focus:outline-none auth-input"
+                    placeholder="••••••••" required>
+            </div>
+            
+            <div class="flex items-center">
+                <input type="checkbox" id="terms" name="terms" class="h-4 w-4 auth-checkbox" required>
+                <label for="terms" class="ml-2 text-sm auth-text">
+                    <a href="/terms" class="auth-link hover:underline">Kullanım şartlarını</a> kabul ediyorum
+                </label>
+            </div>
+            
+            <button type="submit" 
+                class="w-full py-2 px-4 rounded-lg auth-button text-white">
+                Kayıt Ol
+            </button>
+        </form>
+        
+        <div class="text-center mt-6">
+            <p class="text-sm auth-text">
+                Zaten hesabınız var mı? 
+                <a href="/login" class="auth-link hover:underline">Giriş yap</a>
+            </p>
+        </div>
+    </div>
+</div>
+
+<!-- Harici JavaScript dosyasını dahil et -->
+<script src="/js/register.js"></script> 

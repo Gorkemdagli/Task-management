@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Görev Yönetim Sistemi - <%= title %></title>
+    
+    <!-- Kritik CSS ilk yüklenmeli -->
+    <link rel="stylesheet" href="/css/main.css">
+    <% if (title === 'Giriş Yap' || title === 'Kayıt Ol') { %>
+        <link rel="stylesheet" href="/css/auth.css">
+    <% } %>
+    
+    <!-- Font yükleme -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+    </style>
+</head>
+<body class="<%= title === 'Giriş Yap' || title === 'Kayıt Ol' ? '' : 'bg-app' %> flex flex-col min-h-screen">
+    <% if (title !== 'Giriş Yap' && title !== 'Kayıt Ol') { %>
+        <%- include('../partials/header') %>
+    <% } %>
+    
+    <main class="<%= title === 'Giriş Yap' || title === 'Kayıt Ol' ? '' : 'container mx-auto px-4 py-8' %> flex-grow page-content">
+        <%- body %>
+    </main>
+
+    <% if (title !== 'Giriş Yap' && title !== 'Kayıt Ol') { %>
+        <%- include('../partials/footer') %>
+    <% } %>
+
+    <script src="/js/main.js" defer></script>
+    <% if (script) { %>
+    <script src="/js/<%= script %>" defer></script>
+    <% } %>
+</body>
+</html> 

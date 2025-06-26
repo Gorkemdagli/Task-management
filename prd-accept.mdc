@@ -1,0 +1,18 @@
+---
+description: tamam süper
+globs: PRD.md
+alwaysApply: false
+---
+Trigger:
+- Kullanıcı, senin ürettiğin bir kodu onaylayıp "tamam süper" cümlesiyle başlayan bir komut yazdığında tetiklenecek.
+
+Action:
+1. @prd,md dosyasını aç.
+2. Dosya içerisinde "## Yapıldı" başlığını bul.
+3. En son onaylanan (kullanıcının "tamam süper" dediği) çıktının özet bilgisini bu bölümde arat.
+4. Eğer bu çıktı "## Yapıldı" listesinde yoksa, listenin en altına ekle.
+5. Eğer zaten varsa, herhangi bir ekleme yapma.
+
+Context:
+- Bu rule, yalnızca kullanıcı "tamam süper" cümlesiyle başladığında çalışır.
+- Bu rule, projede geliştirilen yeni özelliklerin @prd,md dosyasında güncellenmesi içindir.

@@ -1,0 +1,116 @@
+<!-- Ana container -->
+<div class="min-h-screen bg-gradient-to-b from-primary-color to-accent-color">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <% if (!user) { %>
+        <!-- Giriş yapmamış kullanıcılar için -->
+            <div class="text-center py-12 hero-container p-6">
+                <h1 class="text-4xl font-bold text-white mb-4">Görev Yönetim Sistemine Hoş Geldiniz</h1>
+                <p class="text-xl text-light mb-8">Projelerinizi ve görevlerinizi kolayca yönetin</p>
+                <div class="space-x-4 mb-12">
+                    <a href="/login" class="bg-gradient-to-r from-primary-color to-secondary-color text-white px-5 py-2 rounded-lg shadow-xl shadow-blue-700 hover:shadow-lg transition-all hover:-translate-y-1">Giriş Yap</a>
+                    <a href="/register" class="bg-gray-600 text-white px-5 py-2 rounded-lg shadow-xl shadow-gray-700 hover:shadow-lg transition-all hover:-translate-y-1">Kayıt Ol</a>
+                </div>
+
+                <!-- Görsel ve İçerik Grid -->
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
+                    <!-- Görsel 1 -->
+                    <div class="flex justify-center items-center">
+                        <img src="/css/images/1.png" alt="Görev Yönetimi" class="home-image rounded-lg  max-w-full h-auto">
+                    </div>
+
+                    <!-- İçerik Kutuları -->
+                    <div class="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Sol taraftaki açıklama kutusu -->
+                        <div class="feature-box bg-white bg-opacity-10 p-6 rounded-lg shadow-md text-left backdrop-blur-sm">
+                            <div class="feature-icon">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold text-white mb-4">Neden Görev Yönetimi?</h3>
+                            <p class="text-white text-opacity-90 leading-relaxed">
+                                Görev yönetim sistemimiz ile projelerinizi ve ekip çalışmalarınızı daha verimli hale getirin. 
+                                Takımlar oluşturun, görevleri kolayca atayın ve projenizin ilerleyişini takip edin. 
+                                Modern ve kullanıcı dostu arayüzümüz sayesinde iş akışınızı optimize edin.
+                            </p>
+                        </div>
+                        <!-- Sağ taraftaki özellikler kutusu -->
+                        <div class="feature-box bg-white bg-opacity-10 p-6 rounded-lg shadow-md text-left backdrop-blur-sm">
+                            <div class="feature-icon">
+                                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-semibold text-white mb-4">Özellikler</h3>
+                            <ul class="space-y-3">
+                                <li class="flex items-center text-white text-opacity-90">
+                                    <svg class="w-5 h-5 mr-2 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    Kolay takım yönetimi
+                                </li>
+                                <li class="flex items-center text-white text-opacity-90">
+                                    <svg class="w-5 h-5 mr-2 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    Sürükle-bırak görev organizasyonu
+                                </li>
+                                <li class="flex items-center text-white text-opacity-90">
+                                    <svg class="w-5 h-5 mr-2 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    Gerçek zamanlı ilerleme takibi
+                                </li>
+                                <li class="flex items-center text-white text-opacity-90">
+                                    <svg class="w-5 h-5 mr-2 text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                    </svg>
+                                    Detaylı raporlama araçları
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- İkinci Görsel ve Özellikler -->
+                <div class="feature-box bg-white bg-opacity-10 p-8 mb-12 rounded-lg shadow-lg backdrop-blur-sm">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                        <div class="order-2 lg:order-1">
+                            <h3 class="text-2xl font-bold text-white mb-6">Verimli Proje Yönetimi</h3>
+                            <div class="space-y-4">
+                                <p class="text-white text-opacity-80">
+                                    Modern arayüzümüz ve gelişmiş özellikleriyle projelerinizi daha etkili yönetin.
+                                    Ekip çalışmasını kolaylaştırın ve verimliliğinizi artırın.
+                                </p>
+                                <ul class="space-y-2">
+                                    <li class="flex items-center text-white text-opacity-90">
+                                        <span class="mr-2">🎯</span>
+                                        Hedeflerinizi belirleyin
+                                    </li>
+                                    <li class="flex items-center text-white text-opacity-90">
+                                        <span class="mr-2">📊</span>
+                                        İlerlemeyi takip edin
+                                    </li>
+                                    <li class="flex items-center text-white text-opacity-90">
+                                        <span class="mr-2">🤝</span>
+                                        Ekip işbirliğini güçlendirin
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="order-1 lg:order-2">
+                            <img src="/css/images/2.png" alt="Proje Yönetimi" class="home-image rounded-lg  max-w-full h-auto">
+                        </div>
+                    </div>
+                </div>
+                
+                
+        </div>
+    <% } else { %>
+        <script>
+            // Doğrudan main sayfasına yönlendirme yap
+            window.location.href = '/main';
+        </script>
+    <% } %>
+    </div>
+</div> 

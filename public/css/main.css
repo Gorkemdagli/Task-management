@@ -1,0 +1,530 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* CSS variables */
+
+:root {
+    --primary-color: #2563eb;
+    --secondary-color: #3b82f6;
+    --accent-color: #60a5fa;
+    --success-color: #22c55e;
+    --text-color: white;
+    --text-light: rgba(255, 255, 255, 0.8);
+    --text-dark: #4b5563;
+    --background-gradient: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 50%, #93c5fd 100%);
+    --light-glass: rgba(255, 255, 255, 0.1);
+    --light-glass-hover: rgba(255, 255, 255, 0.2);
+    --light-border: rgba(255, 255, 255, 0.2);
+}
+
+/* Smooth Scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Tailwind CSS Entegrasyonu için Stil Tanımları */
+.bg-primary-color {
+    background-color: var(--primary-color);
+}
+
+.bg-secondary-color {
+    background-color: var(--secondary-color);
+}
+
+.bg-accent-color {
+    background-color: var(--accent-color);
+}
+
+.bg-light-glass {
+    background-color: var(--light-glass);
+}
+
+.bg-light-glass-hover {
+    background-color: var(--light-glass-hover);
+}
+
+.border-light-border {
+    border-color: var(--light-border);
+}
+
+.from-primary-color {
+    --tw-gradient-from: var(--primary-color);
+    --tw-gradient-stops: var(--tw-gradient-from), var(--tw-gradient-to);
+}
+
+.to-secondary-color {
+    --tw-gradient-to: var(--secondary-color);
+}
+
+/* Base styles */
+body {
+    background: var(--background-gradient);
+    color: var(--text-color);
+    margin: 0;
+    font-family: system-ui, -apple-system, sans-serif;
+}
+
+/* Custom styles */
+.bg-app {
+    background: var(--background-gradient);
+}
+
+.task-column {
+    flex: 1;
+    background-color: var(--light-glass);
+    border-radius: 0.75rem;
+    padding: 1rem;
+    border: 1px solid var(--light-border);
+    backdrop-filter: blur(5px);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.task-column:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.task-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+}
+
+.task-title {
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.task-menu-button {
+    color: var(--text-light);
+    transition: color 0.2s;
+}
+
+.task-menu-button:hover {
+    color: var(--text-color);
+}
+
+.task-card {
+    background-color: white;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.task-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.task-indicator {
+    width: 4rem;
+    height: 0.25rem;
+    border-radius: 0.25rem;
+    margin-bottom: 0.75rem;
+}
+
+.task-indicator-todo {
+    background-color: var(--secondary-color);
+}
+
+.task-indicator-doing {
+    background-color: var(--accent-color);
+}
+
+.task-indicator-done {
+    background-color: var(--success-color);
+}
+
+.task-name {
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: var(--text-dark);
+}
+
+.task-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.875rem;
+    color: var(--text-dark);
+}
+
+.task-stats {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.task-assignees {
+    display: flex;
+    margin-left: -0.5rem;
+}
+
+.task-assignee-avatar {
+    width: 1.5rem;
+    height: 1.5rem;
+    border-radius: 9999px;
+    border: 2px solid white;
+    margin-left: -0.5rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.add-task-button {
+    color: var(--text-light);
+    width: 100%;
+    text-align: left;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s;
+}
+
+.add-task-button:hover {
+    background-color: var(--light-glass-hover);
+    color: var(--text-color);
+    transform: translateY(-2px);
+}
+
+.nav-container {
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    backdrop-filter: blur(10px);
+    background-color: rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid var(--light-border);
+}
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.nav-brand {
+    background-color: var(--accent-color);
+    color: var(--text-color);
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    box-shadow: 0 4px 6px rgba(59, 130, 246, 0.2);
+}
+
+.nav-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: rgba(59, 130, 246, 0.3);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-weight: 500;
+}
+
+.nav-right {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.team-avatars {
+    display: flex;
+    margin-left: -0.5rem;
+}
+
+.team-avatar {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 9999px;
+    border: 2px solid white;
+    margin-left: -0.5rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.team-avatar:hover {
+    transform: translateY(-3px);
+    z-index: 10;
+}
+
+.team-count {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 9999px;
+    border: 2px solid white;
+    background-color: #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    color: var(--text-dark);
+}
+
+.invite-button {
+    background-color: var(--light-glass);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    transition: all 0.2s;
+    border: 1px solid var(--light-border);
+}
+
+.invite-button:hover {
+    background-color: var(--light-glass-hover);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.search-input {
+    background-color: var(--light-glass);
+    color: var(--text-color);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    outline: none;
+    border: 1px solid var(--light-border);
+    transition: all 0.2s;
+}
+
+.search-input::placeholder {
+    color: var(--text-light);
+}
+
+.search-input:focus {
+    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.5);
+    transform: translateY(-2px);
+}
+
+.notification-button {
+    color: var(--text-color);
+    transition: all 0.2s;
+}
+
+.notification-button:hover {
+    color: var(--text-light);
+    transform: translateY(-2px);
+}
+
+.main-container {
+    padding: 2rem 1.5rem;
+    display: flex;
+    gap: 1.5rem;
+}
+
+/* Auth Pages Styles */
+.bg-gray-100 {
+    background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+}
+
+.bg-white {
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    transition: transform 0.2s ease-in-out;
+}
+
+.bg-white:hover {
+    transform: translateY(-2px);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+    transition: border-color 0.2s ease-in-out;
+}
+
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus {
+    border-color: #3b82f6;
+}
+
+button[type="submit"] {
+    position: relative;
+    overflow: hidden;
+    transition: background-color 0.3s;
+}
+
+button[type="submit"]:after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 5px;
+    height: 5px;
+    background: rgba(255, 255, 255, 0.5);
+    opacity: 0;
+    border-radius: 100%;
+    transform: scale(1, 1) translate(-50%);
+    transform-origin: 50% 50%;
+}
+
+button[type="submit"]:hover:after {
+    animation: ripple 1s ease-out;
+}
+
+@keyframes ripple {
+    0% {
+        transform: scale(0);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* Sürükle-bırak stilleri */
+.task-list {
+    min-height: 100px;
+}
+
+.task-card-ghost {
+    opacity: 0.6;
+    background: rgba(235, 235, 235, 0.8) !important;
+    border: 1px dashed #3b82f6 !important;
+}
+
+.task-card-chosen {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15) !important;
+    transform: scale(1.05);
+    transition: transform 0.2s ease;
+}
+
+.task-card-drag {
+    opacity: 0.9;
+    transform: rotate(3deg);
+    cursor: grabbing !important;
+}
+
+/* Animasyonlar */
+.task-card {
+    transition: all 0.3s ease;
+}
+
+/* Boş listelerde gösterilecek ipucu */
+.task-list:empty::before {
+    content: "Buraya sürükleyin";
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: rgba(255, 255, 255, 0.5);
+    font-style: italic;
+    height: 100px;
+    border: 2px dashed rgba(255, 255, 255, 0.2);
+    border-radius: 0.5rem;
+    margin: 0.5rem 0;
+}
+
+/* Modal Stilleri */
+#task-modal {
+    z-index: 1000;
+}
+
+#task-modal .bg-white {
+    background-color: white;
+}
+
+#task-modal h3 {
+    color: #1f2937; /* text-gray-900 */
+}
+
+#task-modal form label {
+    color: #374151 !important; /* text-gray-700 */
+}
+
+#task-modal form input,
+#task-modal form textarea,
+#task-modal form select {
+    color: #1f2937 !important; /* text-gray-900 */
+    background-color: white !important;
+}
+
+#task-modal button {
+    opacity: 1;
+}
+
+/* Ana sayfa özel stilleri */
+.hero-container {
+    background-color: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+/* .hero-container:hover {
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    transform: translateY(-5px);
+} */
+
+.feature-box {
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* .feature-box:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+} */
+
+.feature-icon {
+    width: 50px;
+    height: 50px;
+    background-color: var(--accent-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.home-image {
+    filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.2));
+}
+
+/* Alt sayfa stilleri */
+.home-footer {
+    background-color: rgba(0, 0, 0, 0.05);
+    backdrop-filter: blur(5px);
+    border-top: 1px solid var(--light-border);
+    padding: 2rem 0;
+    margin-top: 3rem;
+}
+
+/* Performans iyileştirmeleri için CSS optimizasyonları */
+.task-card, .add-task-button, .nav-container {
+    will-change: transform; /* GPU hızlandırma için */
+    transform: translateZ(0); /* Hardware acceleration tetiklemek için */
+    backface-visibility: hidden; /* Performans için */
+}
+
+/* Sayfa yükleme animasyonu */
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Sayfa içeriği için fade-in animasyonu */
+.page-content {
+    animation: fade-in 0.3s ease-in-out;
+}
+
+/* Skeleton loading ekranı için */
+.skeleton {
+    background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+}
+
+@keyframes loading {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+} 
