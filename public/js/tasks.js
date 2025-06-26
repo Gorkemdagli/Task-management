@@ -16,8 +16,15 @@ var userId = document.body.getAttribute('data-user-id');
 var isSubmitting = false; // Form submit işlemi için flag
 
 document.addEventListener('DOMContentLoaded', function() {
-    // Sayfa yüklendiğinde form gönderim durumunu sıfırla
+    // Sayfa yüklendiğinde form gönderim durumunu kesinlikle sıfırla
     isSubmitting = false;
+    
+    // Sayfa görünürlük değiştiğinde de sıfırla (kullanıcı sekme değiştirip geri geldiğinde)
+    document.addEventListener('visibilitychange', function() {
+        if (!document.hidden) {
+            isSubmitting = false;
+        }
+    });
     
     // Tarayıcı yükleme performansı için önemli işlemleri hemen başlat
     // Diğerlerini zamanlayalım
@@ -83,6 +90,19 @@ function initializeTaskForm() {
         taskTeamSelect.addEventListener('change', handleTeamSelectChange);
     }
     
+    // Submit butonu için ek koruma
+    const submitButton = document.getElementById('task-submit-btn');
+    if (submitButton) {
+        submitButton.addEventListener('click', function(e) {
+            // Eğer zaten işlem yapılıyorsa butona tıklamayı engelle
+            if (isSubmitting) {
+                e.preventDefault();
+                e.stopPropagation();
+                return false;
+            }
+        });
+    }
+    
     // Form gönderildiğinde
     if (taskForm) {
         // Mevcut kullanıcı ID'sini form container'a ekleyelim
@@ -111,7 +131,6 @@ function handleTaskFormSubmit(e) {
     e.preventDefault();
     // Eğer zaten form gönderimi yapılıyorsa, işlemi engelle
     if (isSubmitting) return;
-    isSubmitting = true;
     createTask();
 }
 
@@ -667,10 +686,10 @@ async function deleteTask(taskId) {
         applyFilters();
         
         // Bildirim
-        alert('Görev başarıyla silindi');
+        showSuccess('Görev başarıyla silindi');
     } catch (error) {
         console.error('Görev silme hatası:', error);
-        alert('Görev silinirken bir hata oluştu');
+        showError('Görev silinirken bir hata oluştu');
     }
 }
 
@@ -708,7 +727,7 @@ async function updateTaskStatus(taskId, newStatus) {
         applyFilters();
     } catch (error) {
         console.error('Görev durumu güncelleme hatası:', error);
-        alert('Görev durumu güncellenirken bir hata oluştu');
+        showError('Görev durumu güncellenirken bir hata oluştu');
     }
 }
 
@@ -716,6 +735,11 @@ async function updateTaskStatus(taskId, newStatus) {
  * Yeni görev oluştur
  */
 async function createTask() {
+    // Çift gönderim kontrolü - eğer zaten işlem yapılıyorsa çık
+    if (isSubmitting) {
+        return;
+    }
+    
     // Form verilerini al
     const title = document.getElementById('task-title').value;
     const description = document.getElementById('task-description').value;
@@ -727,6 +751,9 @@ async function createTask() {
     const submitButton = document.getElementById('task-submit-btn');
     const taskForm = document.getElementById('task-form');
     
+    // İşlem başladığını işaretle
+    isSubmitting = true;
+    
     // Buton kontrolü - öncelikle devre dışı bırak (çift gönderimi engelle)
     if (submitButton) {
         submitButton.disabled = true;
@@ -736,12 +763,13 @@ async function createTask() {
     
     // Gerekli alanları kontrol et
     if (!title || !teamId) {
-        alert('Başlık ve takım zorunludur');
+        showWarning('Başlık ve takım zorunludur');
         if (submitButton) {
             submitButton.disabled = false;
             submitButton.innerText = 'Görev Oluştur';
             submitButton.classList.remove('opacity-75', 'cursor-not-allowed');
         }
+        // İşlem başarısız olduğu için bayrağı sıfırla
         isSubmitting = false;
         return;
     }
@@ -786,8 +814,6 @@ async function createTask() {
         // Duplike istek kontrolü için timestamp ekleme
         taskData._requestTime = Date.now();
         
-        console.log("Görev oluşturma verileri:", taskData);
-        
         const response = await fetch('/api/tasks', {
             method: 'POST',
             headers: {
@@ -807,37 +833,27 @@ async function createTask() {
         
         // Duplike görev kontrolü - sunucu duplike görev tespit ettiyse
         if (responseData.isDuplicate) {
-            console.log('Duplike görev tespit edildi:', responseData.message);
-            alert('Bu görev zaten oluşturuldu.');
+            showWarning('Bu görev zaten oluşturuldu.');
             
-            // Formu temizle
-            resetTaskForm();
-            
-            // Mevcut görevleri yeniden yükle (belki sunucu tarafında oluşturulmuş olabilir)
-            loadTasks();
+            setTimeout(() => {
+                window.location.reload();
+            }, 500);
             return;
         }
         
         // Yeni görev sunucudan alındı
         const newTask = responseData;
-        console.log("Oluşturulan görev:", newTask);
         
-        // Formu temizle
-        resetTaskForm();
+        // Başarı mesajını göster
+        showSuccess('Görev başarıyla oluşturuldu');
         
-        // Yeni görevi listeye ekle ve UI'ı güncelle
-        if (newTask && newTask._id) {
-            taskItems.push(newTask);
-            applyFilters();
-        } else {
-            // Yeni görev düzgün alınamadıysa tüm görevleri tekrar yükle
-            loadTasks();
-        }
-        
-        alert('Görev başarıyla oluşturuldu');
+        // Kısa bir gecikme ile sayfa yenile (toast mesajının görünmesi için)
+        setTimeout(() => {
+            window.location.reload();
+        }, 500);
     } catch (error) {
         console.error('Görev oluşturma hatası:', error);
-        alert(error.message || 'Görev oluşturulurken bir hata oluştu');
+        showError(error.message || 'Görev oluşturulurken bir hata oluştu');
     } finally {
         // İşlem tamamlandığında butonu tekrar etkinleştir
         if (submitButton) {
@@ -848,6 +864,11 @@ async function createTask() {
         
         // Form gönderim bayrağını sıfırla
         isSubmitting = false;
+        
+        // Güvenlik için 5 saniye sonra bayrağı kesinlikle sıfırla (network timeout durumları için)
+        setTimeout(() => {
+            isSubmitting = false;
+        }, 5000);
     }
 }
 
@@ -876,5 +897,5 @@ function resetTaskForm() {
  */
 function editTask(taskId) {
     // Şu an için mock fonksiyon
-    alert(`Görev düzenleme özelliği yakında eklenecek! (ID: ${taskId})`);
+    showInfo(`Görev düzenleme özelliği yakında eklenecek! (ID: ${taskId})`);
 } 

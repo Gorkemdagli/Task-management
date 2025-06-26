@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .catch(error => {
                     console.error('Hata:', error);
-                    alert('Görev güncellenirken bir hata oluştu.');
+                    showError('Görev güncellenirken bir hata oluştu.');
                 });
             } else {
                 // Yeni görev ekleme API'si
@@ -121,7 +121,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .catch(error => {
                     console.error('Hata:', error);
-                    alert('Görev eklenirken bir hata oluştu.');
+                    showError('Görev eklenirken bir hata oluştu.');
                 });
             }
         });
@@ -350,7 +350,7 @@ function updateTaskStatus(taskId, newStatus) {
     })
     .catch(error => {
         console.error('Hata:', error);
-        alert('Görev durumu güncellenirken bir hata oluştu.');
+        showError('Görev durumu güncellenirken bir hata oluştu.');
         // Hata durumunda görevleri yeniden yükleyerek UI'ı sıfırla
         loadKanbanTasks();
     });

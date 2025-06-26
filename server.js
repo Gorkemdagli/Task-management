@@ -5,6 +5,7 @@ const cors = require('cors');
 const path = require('path');
 const expressLayouts = require('express-ejs-layouts');
 const cookieParser = require('cookie-parser');
+const connectDB = require('./config/db');
 const userRoutes = require('./routes/userRoutes');
 const taskRoutes = require('./routes/taskRoutes');
 const teamRoutes = require('./routes/teamRoutes');
@@ -44,28 +45,31 @@ app.use(notFoundHandler);
 // Global hata yakalama middleware
 app.use(errorHandler);
 
-// MongoDB bağlantısı
-const connectDB = async () => {
-  try {
-    if (process.env.NODE_ENV !== 'test') {
-      await mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/task-management-app');
-      console.log('MongoDB bağlantısı başarılı');
-    }
-  } catch (err) {
-    console.error('MongoDB bağlantı hatası:', err);
-    process.exit(1);
-  }
-};
-
 // Port dinleme
-if (process.env.NODE_ENV !== 'test') {
-  const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000;
+
+// Test ortamında jest çalışmıyorsa sunucuyu başlat
+if (process.env.NODE_ENV !== 'test' || (process.env.NODE_ENV === 'test' && !process.env.JEST_WORKER_ID)) {
+  // MongoDB bağlantısını başlat
   connectDB().then(() => {
     app.listen(PORT, () => {
-      console.log(`Sunucu ${PORT} portunda çalışıyor`);
-      console.log(`Swagger dokümantasyonu: http://localhost:${PORT}/api-docs`);
+      console.log(`🚀 Sunucu ${PORT} portunda çalışıyor`);
+      console.log(`📊 Ortam: ${process.env.NODE_ENV || 'development'}`);
+      console.log(`📚 Swagger dokümantasyonu: http://localhost:${PORT}/api-docs`);
+      console.log(`🌐 Uygulama: http://localhost:${PORT}`);
+      
+      if (process.env.NODE_ENV === 'test') {
+        console.log(`🧪 Test ortamında çalışıyor - Gerçek veritabanı kullanılıyor`);
+      }
     });
+  }).catch((error) => {
+    console.error('Sunucu başlatılırken hata oluştu:', error);
+    process.exit(1);
   });
+} else {
+  // Jest test ortamında bilgileri göster
+  console.log(`🧪 Jest test modu aktif - Port: ${PORT}`);
+  console.log(`📊 NODE_ENV: ${process.env.NODE_ENV}`);
 }
 
 module.exports = app; 

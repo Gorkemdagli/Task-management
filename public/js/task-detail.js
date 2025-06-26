@@ -120,7 +120,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => {
             console.error('Hata:', error);
-            alert('Görev durumu güncellenirken bir hata oluştu.');
+            showError('Görev durumu güncellenirken bir hata oluştu.');
         });
     }
     
@@ -147,7 +147,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => {
             console.error('Hata:', error);
-            alert('Görev silinirken bir hata oluştu.');
+            showError('Görev silinirken bir hata oluştu.');
         });
     }
     
@@ -361,7 +361,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             // Hata mesajını göster
-            alert(error.message || 'Görevli eklenirken bir hata oluştu. Lütfen geçerli bir e-posta adresi girdiğinizden emin olun.');
+            showError(error.message || 'Görevli eklenirken bir hata oluştu. Lütfen geçerli bir e-posta adresi girdiğinizden emin olun.');
         });
     }
     
@@ -393,7 +393,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .catch(error => {
             console.error('Hata:', error);
-            alert(error.message || 'Görevli çıkarılırken bir hata oluştu.');
+            showError(error.message || 'Görevli çıkarılırken bir hata oluştu.');
         });
     }
     

@@ -75,8 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const editTeamBtn = document.getElementById('edit-team-btn');
     if (editTeamBtn) {
         editTeamBtn.addEventListener('click', function() {
-            // Takım düzenleme modal'ı gösterilecek (ileride eklenecek)
-            alert('Takım düzenleme özelliği yakında eklenecek!');
+            showInfo('Takım düzenleme özelliği yakında eklenecek!');
         });
     }
     
@@ -193,7 +192,7 @@ function removeMember(memberId) {
     })
     .catch(error => {
         console.error('Hata:', error);
-        alert('Üye çıkarılırken bir hata oluştu.');
+        showError('Üye çıkarılırken bir hata oluştu.');
     });
 }
 
@@ -225,7 +224,7 @@ function leaveTeam() {
     })
     .catch(error => {
         console.error('Hata:', error);
-        alert('Takımdan ayrılırken bir hata oluştu.');
+        showError('Takımdan ayrılırken bir hata oluştu.');
     });
 }
 
@@ -325,11 +324,11 @@ function addMember(userId) {
         document.getElementById('add-member-modal').classList.add('hidden');
         
         // Sayfayı yenile
-        alert('Kullanıcı takıma başarıyla eklendi!');
-        window.location.reload();
+        showSuccess('Kullanıcı takıma başarıyla eklendi!');
+        setTimeout(() => window.location.reload(), 1000);
     })
     .catch(error => {
         console.error('Hata:', error);
-        alert(error.message || 'Üye eklenirken bir hata oluştu');
+        showError(error.message || 'Üye eklenirken bir hata oluştu');
     });
 } 

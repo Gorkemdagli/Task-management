@@ -111,7 +111,7 @@ describe('Task API Tests', () => {
             expect(response.body.description).toBe(taskData.description);
             expect(response.body.status).toBe(taskData.status);
             expect(response.body.priority).toBe(taskData.priority);
-            expect(response.body.creator.toString()).toBe(user._id.toString());
+            expect(response.body.creator._id || response.body.creator).toBe(user._id.toString());
         });
         
         it('Kimlik doğrulaması olmadan görev oluşturamamalı', async () => {
