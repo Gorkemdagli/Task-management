@@ -1,24 +1,50 @@
 // Test ortamını hazırlama dosyası
 require('dotenv').config({ path: '.env.test' });
 
-// MongoDB bellek sunucusu için gerekli ayarlar (opsiyonel)
-// const { MongoMemoryServer } = require('mongodb-memory-server');
-// let mongod;
+const { MongoMemoryServer } = require('mongodb-memory-server');
+const mongoose = require('mongoose');
 
-// MongoDB bellek sunucusunu başlat (opsiyonel)
-// beforeAll(async () => {
-//   mongod = await MongoMemoryServer.create();
-//   process.env.MONGODB_URI_TEST = mongod.getUri();
-// });
+let mongod;
 
-// MongoDB bellek sunucusunu kapat (opsiyonel)
-// afterAll(async () => {
-//   await mongod.stop();
-// });
+// MongoDB bellek sunucusunu başlat
+beforeAll(async () => {
+  mongod = await MongoMemoryServer.create();
+  const uri = mongod.getUri();
+  process.env.MONGODB_URI = uri;
+  
+  console.log('🧪 Test MongoDB Memory Server başlatıldı');
+  console.log(`📊 Test veritabanı URI: ${uri}`);
+  
+  // Test veritabanına bağlan
+  await mongoose.connect(uri);
+  console.log('✅ Test veritabanına bağlandı');
+});
+
+// Her testten sonra veritabanını temizle
+afterEach(async () => {
+  const collections = mongoose.connection.collections;
+  for (const key in collections) {
+    const collection = collections[key];
+    await collection.deleteMany({});
+  }
+});
+
+// MongoDB bellek sunucusunu kapat
+afterAll(async () => {
+  if (mongoose.connection.readyState !== 0) {
+    await mongoose.connection.close();
+  }
+  if (mongod) {
+    await mongod.stop();
+    console.log('🔴 Test MongoDB Memory Server kapatıldı');
+  }
+});
 
 // Konsolda hata ayıklama mesajlarını gösterme
 jest.setTimeout(30000); // Timeout süresini arttır
 
+// Console loglarını göstermek için bu kısmı yoruma aldım
+/*
 // Konsolda hata çıktılarını gizle (test çıktılarını daha temiz tutar)
 global.console = {
   ...console,
@@ -45,3 +71,4 @@ afterEach(() => {
     global.console.info = global.console._info;
   }
 }); 
+*/ 

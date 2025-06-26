@@ -4,11 +4,13 @@
   "description": "Modern görev yönetim uygulaması",
   "main": "server.js",
   "scripts": {
-    "start": "nodemon server.js",
+    "start": "npx nodemon server.js",
     "dev": "nodemon server.js",
     "build:css": "tailwindcss -i ./public/css/main.css -o ./public/css/output.css",
     "watch:css": "tailwindcss -i ./public/css/main.css -o ./public/css/output.css --watch",
-    "test": "jest --detectOpenHandles --forceExit"
+    "test": "jest --detectOpenHandles --forceExit",
+    "test:watch": "jest --watch --detectOpenHandles",
+    "seed": "node scripts/seed.js"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
