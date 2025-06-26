@@ -10,11 +10,13 @@ Modern, kullanıcı dostu takım bazlı görev yönetim uygulaması. Ekibinizle 
 - **Rol Bazlı Erişim**: Admin ve normal kullanıcı rolleri
 
 ### 📝 Görev Yönetimi
-- **Görev Oluşturma**: Detaylı görev tanımları
+- **Görev Oluşturma**: Detaylı görev tanımları ve son teslim tarihi
 - **Durum Takibi**: Yapılacak → Yapılıyor → Tamamlandı
 - **Öncelik Sistemi**: Yüksek, Orta, Düşük öncelik seviyeleri
 - **Görev Atama**: Takım üyelerine görev atayın
 - **Gerçek Zamanlı Güncelleme**: Anlık görev durumu değişiklikleri
+- **Akıllı Filtreleme**: Takım, durum ve öncelik bazlı filtreleme
+- **Duplike Görev Koruması**: Aynı görevin iki kez oluşturulmasını engeller
 
 ### 🔐 Güvenlik
 - **JWT Kimlik Doğrulama**: Güvenli oturum yönetimi
@@ -25,7 +27,9 @@ Modern, kullanıcı dostu takım bazlı görev yönetim uygulaması. Ekibinizle 
 - **Responsive Tasarım**: Tüm cihazlarda uyumlu
 - **Glassmorphism Efektleri**: Modern görsel tasarım
 - **Tailwind CSS**: Hızlı ve tutarlı stil
-- **Kullanıcı Dostu**: Sezgisel arayüz tasarımı
+- **Toast Bildirim Sistemi**: Modern, kullanıcı dostu bildirimler
+- **Çift Gönderim Koruması**: Yanlışlıkla aynı işlemin iki kez yapılmasını engeller
+- **Otomatik Sayfa Yenileme**: İşlem sonrası otomatik güncelleme
 
 ## 🚀 Hızlı Başlangıç
 
@@ -107,9 +111,14 @@ Uygulama `http://localhost:3000` adresinde çalışmaya başlayacak! 🎉
    - Takım üyelerine atayın
 
 2. **Görev Durumu Değiştirme**:
-   - Görev kartının üzerine tıklayın
+   - Görev kartındaki durum dropdown'ını kullanın
    - Durum seçeneğini değiştirin
    - Değişiklikler otomatik kaydedilir
+
+3. **Görev Filtreleme**:
+   - Takım, durum veya öncelik filtrelerini kullanın
+   - Arama yaparak hızlıca görev bulun
+   - Filtreler gerçek zamanlı çalışır
 
 ## 🛠️ Geliştirici Kılavuzu
 
@@ -129,8 +138,14 @@ task-management-app/
 
 ### Geliştirme Komutları
 ```bash
-# Geliştirme modunda çalıştır (otomatik yeniden başlatma)
-npm run dev
+# Geliştirme modunda çalıştır
+npm start
+
+# Production ortamında çalıştır
+npm run start:prod
+
+# Test ortamında çalıştır
+npm run start:test
 
 # Testleri çalıştır
 npm test
@@ -307,6 +322,9 @@ Bu proje MIT lisansı altında lisanslanmıştır. Detaylar için `LICENSE` dosy
 # Windows'ta portu kullanan işlemi bul ve sonlandır
 netstat -ano | findstr :3000
 taskkill /PID <process-id> /F
+
+# Linux/Mac'te
+sudo lsof -ti:3000 | xargs kill -9
 ```
 
 **MongoDB bağlantı hatası:**
@@ -317,6 +335,32 @@ taskkill /PID <process-id> /F
 **JWT token hatası:**
 - `JWT_SECRET` environment variable'ının set edildiğinden emin olun
 - Browser'da cookies'leri temizleyin
+
+**Çift gönderim sorunu:**
+- Sayfa yenilendiğinde otomatik düzelir
+- Console'da hata mesajları varsa kontrol edin
+- Browser cache'ini temizlemeyi deneyin
+
+**Toast bildirimleri görünmüyor:**
+- JavaScript console'da hata olup olmadığını kontrol edin
+- Sayfa tamamen yüklendiğinden emin olun
+- Browser'ın JavaScript'i engellediğini kontrol edin
+
+## 🆕 Son Güncellemeler
+
+### v2.1.0 - Kullanıcı Deneyimi İyileştirmeleri
+- ✅ **Toast Bildirim Sistemi**: Eski alert() popup'ları yerine modern toast bildirimleri
+- ✅ **Çift Gönderim Koruması**: Görev oluşturma sırasında yanlışlıkla çift tıklamayı engeller
+- ✅ **Otomatik Sayfa Yenileme**: Başarılı işlemler sonrası otomatik güncelleme
+- ✅ **Gelişmiş Hata Yönetimi**: Daha kullanıcı dostu hata mesajları
+- ✅ **Performans İyileştirmeleri**: Daha hızlı sayfa yükleme süreleri
+
+### v2.0.0 - Ana Özellikler
+- ✅ **Takım Bazlı Görev Yönetimi**: Ekip çalışması için optimize edilmiş sistem
+- ✅ **Rol Bazlı Erişim Kontrolü**: Admin ve kullanıcı rolleri
+- ✅ **Gerçek Zamanlı Filtreleme**: Anlık görev filtreleme ve arama
+- ✅ **Modern UI/UX**: Glassmorphism ve Tailwind CSS ile tasarım
+- ✅ **Güvenlik Güncellemeleri**: JWT authentication ve şifreleme
 
 ## 📞 Destek
 
