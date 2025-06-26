@@ -100,7 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .catch(error => {
                     console.error('Hata:', error);
-                    alert('Görev güncellenirken bir hata oluştu.');
+                    showError('Görev güncellenirken bir hata oluştu.');
                 });
             } else {
                 // Yeni görev ekleme API'si
@@ -127,7 +127,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 })
                 .catch(error => {
                     console.error('Hata:', error);
-                    alert('Görev eklenirken bir hata oluştu.');
+                    showError('Görev eklenirken bir hata oluştu.');
                 });
             }
         });
@@ -253,56 +253,63 @@ function updateTaskList(containerId, tasks) {
     
     let html = '';
     
-    tasks.forEach(task => {
-        let indicatorClass = '';
-        let statusDisplay = '';
-        
-        // Duruma göre gösterge sınıfı ve metni belirle
-        switch(container.getAttribute('data-status')) {
-            case 'todo':
-                indicatorClass = 'task-indicator-todo';
-                statusDisplay = '';
-                break;
-            case 'doing':
-                indicatorClass = 'task-indicator-doing';
-                statusDisplay = `<div class="text-sm text-gray-600">${task.completedSubtasks || 0}/${task.totalSubtasks || 0}</div>`;
-                break;
-            case 'done':
-                indicatorClass = 'task-indicator-done';
-                statusDisplay = '<div class="text-sm text-gray-600">✔ Tamamlandı</div>';
-                break;
-        }
-        
-        html += `
-            <div class="task-card" data-id="${task._id}">
-                <div class="task-indicator ${indicatorClass}"></div>
-                <h3 class="task-name">${task.title}</h3>
-                ${statusDisplay}
-                <div class="task-meta">
-                    <div class="task-stats">
-                        <span>👁 ${task.viewCount || 0}</span>
-                        <span>💬 ${task.commentCount || 0}</span>
-                    </div>
-                    <div class="task-assignees">
-                        ${task.assignees && task.assignees.map(assignee => 
-                            `<img class="task-assignee-avatar" src="${assignee.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(assignee.name)}`}" alt="${assignee.name}">`
-                        ).join('') || ''}
+    if (tasks.length === 0) {
+        // Boş durum mesajı
+        html = '<div class="text-center text-gray-500 py-4"><p>Henüz görev yok</p></div>';
+    } else {
+        tasks.forEach(task => {
+            let indicatorClass = '';
+            let statusDisplay = '';
+            
+            // Duruma göre gösterge sınıfı ve metni belirle
+            switch(container.getAttribute('data-status')) {
+                case 'todo':
+                    indicatorClass = 'task-indicator-todo';
+                    statusDisplay = '';
+                    break;
+                case 'doing':
+                    indicatorClass = 'task-indicator-doing';
+                    statusDisplay = `<div class="text-sm text-gray-600">${task.completedSubtasks || 0}/${task.totalSubtasks || 0}</div>`;
+                    break;
+                case 'done':
+                    indicatorClass = 'task-indicator-done';
+                    statusDisplay = '<div class="text-sm text-gray-600">✔ Tamamlandı</div>';
+                    break;
+            }
+            
+            html += `
+                <div class="task-card" data-id="${task._id}">
+                    <div class="task-indicator ${indicatorClass}"></div>
+                    <h3 class="task-name">${task.title}</h3>
+                    ${statusDisplay}
+                    <div class="task-meta">
+                        <div class="task-stats">
+                            <span>👁 ${task.viewCount || 0}</span>
+                            <span>💬 ${task.commentCount || 0}</span>
+                        </div>
+                        <div class="task-assignees">
+                            ${task.assignees && task.assignees.map(assignee => 
+                                `<img class="task-assignee-avatar" src="${assignee.avatar || `https://ui-avatars.com/api/?name=${encodeURIComponent(assignee.name)}`}" alt="${assignee.name}">`
+                            ).join('') || ''}
+                        </div>
                     </div>
                 </div>
-            </div>
-        `;
-    });
+            `;
+        });
+    }
     
     container.innerHTML = html;
     
-    // Görev kartlarına tıklama olayı ekle
-    container.querySelectorAll('.task-card').forEach(card => {
-        card.addEventListener('click', function() {
-            const taskId = this.getAttribute('data-id');
-            // Görev detay sayfasına yönlendir
-            window.location.href = `/tasks/${taskId}`;
+    // Görev kartlarına tıklama olayı ekle (sadece görev varsa)
+    if (tasks.length > 0) {
+        container.querySelectorAll('.task-card').forEach(card => {
+            card.addEventListener('click', function() {
+                const taskId = this.getAttribute('data-id');
+                // Görev detay sayfasına yönlendir
+                window.location.href = `/tasks/${taskId}`;
+            });
         });
-    });
+    }
 }
 
 /**
@@ -354,7 +361,7 @@ function updateTaskStatus(taskId, newStatus) {
         // console.log('Görev durumu güncellendi:', data);
     })
     .catch(error => {
-        alert('Görev durumu güncellenirken bir hata oluştu: ' + error.message);
+        showError('Görev durumu güncellenirken bir hata oluştu: ' + error.message);
     });
 }
 

@@ -46,14 +46,24 @@ npm install
 ```
 
 ### 3. Çevre Değişkenlerini Ayarlayın
-`.env` dosyası oluşturun ve aşağıdaki değişkenleri ekleyin:
+`.env.example` dosyasını `.env` olarak kopyalayın ve kendi bilgilerinizle doldurun:
+
+```bash
+# Windows
+copy .env.example .env
+
+# Linux/Mac
+cp .env.example .env
+```
+
+`.env` dosyasını açın ve gerekli bilgileri düzenleyin:
 
 ```env
 # MongoDB Connection - Ana Veritabanı
-MONGODB_URI=mongodb+srv://kullanici:sifre@cluster.mongodb.net/task-management-app?retryWrites=true&w=majority
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/task-management-app?retryWrites=true&w=majority
 
 # JWT Secret Key (Güçlü bir anahtar kullanın!)
-JWT_SECRET=super-gizli-jwt-anahtari-buraya-yazin
+JWT_SECRET=your-secret-jwt-key-here
 
 # Node Environment
 NODE_ENV=production
@@ -61,6 +71,8 @@ NODE_ENV=production
 # Server Port
 PORT=3000
 ```
+
+> ⚠️ **Önemli**: `.env` dosyalarınızı asla git'e commit etmeyin. Bu dosyalar hassas bilgiler içerir.
 
 ### 4. Uygulamayı Başlatın
 ```bash
@@ -178,13 +190,39 @@ Test ortamında uygulama:
 - Gerçek veritabanını etkilemez
 - Her testten sonra veriler temizlenir
 
+### Test Ortamı Kurulumu
+
+1. `.env.example` dosyasını `.env.test` olarak kopyalayın:
+
 ```bash
-# Test modunda çalıştır
-NODE_ENV=test npm start
+# Windows
+copy .env.example .env.test
+
+# Linux/Mac
+cp .env.example .env.test
+```
+
+2. `.env.test` dosyasını düzenleyin:
+
+```env
+# Test Environment Configuration
+NODE_ENV=test
+PORT=3001
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/task-management-app-test?retryWrites=true&w=majority
+JWT_SECRET=your-test-jwt-secret-key
+```
+
+3. Test ortamında çalıştırın:
+
+```bash
+# Test ortamında çalıştır
+npm run start:test
 
 # Testleri çalıştır
 npm test
 ```
+
+> 📝 **Not**: Test ortamında in-memory MongoDB kullanıldığı için veriler kalıcı değildir. Uygulama her yeniden başlatıldığında veriler sıfırlanır.
 
 ## 📊 API Endpoints
 
@@ -288,3 +326,54 @@ Herhangi bir sorunuz veya sorununuz için:
 - Dokümantasyon: [your-docs-url]
 
 ---
+
+## 🔧 Environment Dosyaları
+
+### `.env` - Production Ortamı
+```env
+# MongoDB Connection - Ana Veritabanı
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/task-management-app?retryWrites=true&w=majority
+
+# JWT Secret Key (Güçlü bir anahtar kullanın!)
+JWT_SECRET=your-secret-jwt-key-here
+
+# Node Environment
+NODE_ENV=production
+
+# Server Port
+PORT=3000
+```
+
+### `.env.test` - Test Ortamı
+```env
+# Test Environment Configuration
+NODE_ENV=test
+PORT=3001
+MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/task-management-app-test?retryWrites=true&w=majority
+JWT_SECRET=your-test-jwt-secret-key
+```
+
+> ⚠️ **Güvenlik Uyarısı**: `.env` dosyalarınızı ASLA git'e commit etmeyin. Bu dosyalar hassas bilgiler içerir.
+
+## 🔐 Güvenlik Notları
+
+### Environment Dosyaları
+- **ASLA** `.env` veya `.env.test` dosyalarını git'e commit etmeyin
+- Her zaman `.env.example` dosyasını şablon olarak kullanın
+- Hassas bilgileri (şifreler, API anahtarları) güvenli bir şekilde saklayın
+- Her ortam için ayrı `.env` dosyaları kullanın
+
+### Şifre Güvenliği
+- JWT Secret anahtarınızı güçlü ve karmaşık tutun
+- MongoDB kullanıcı şifrelerinizi düzenli olarak değiştirin
+- Production ortamında daha güçlü şifreler kullanın
+
+### Veritabanı Güvenliği
+- MongoDB Atlas'ta IP whitelisting kullanın
+- Sadece gerekli IP adreslerine erişim izni verin
+- Database user'a sadece gerekli yetkileri verin
+
+### Kod Güvenliği
+- Hassas bilgileri kod içinde saklamayın
+- Tüm kullanıcı girdilerini doğrulayın ve temizleyin
+- Güvenlik güncellemelerini düzenli olarak yapın

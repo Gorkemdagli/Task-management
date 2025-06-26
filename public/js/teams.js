@@ -213,7 +213,7 @@ function createTeam() {
     const submitButton = document.querySelector('#team-form button[type="submit"]');
     
     if (!nameInput.value.trim()) {
-        alert('Takım adı boş olamaz!');
+        showWarning('Takım adı boş olamaz!');
         return;
     }
     
@@ -248,7 +248,7 @@ function createTeam() {
         return response.json();
     })
     .then(data => {
-        alert('Takım başarıyla oluşturuldu!');
+        showSuccess('Takım başarıyla oluşturuldu!');
         
         // Formu temizle
         nameInput.value = '';
@@ -256,10 +256,10 @@ function createTeam() {
         avatarInput.value = '';
         
         // Sayfa yenile
-        window.location.reload();
+        setTimeout(() => window.location.reload(), 1000);
     })
     .catch(() => {
-        alert('Takım oluşturulurken bir hata oluştu.');
+        showError('Takım oluşturulurken bir hata oluştu.');
         
         // Hata durumunda oluşturma durumunu sıfırla ve butonu tekrar etkinleştir
         isCreatingTeam = false;
@@ -289,10 +289,10 @@ function deleteTeam(teamId) {
         return response.json();
     })
     .then(data => {
-        alert('Takım başarıyla silindi!');
+        showSuccess('Takım başarıyla silindi!');
         loadTeams(); // Takımları yeniden yükle
     })
     .catch(() => {
-        alert('Takım silinirken bir hata oluştu.');
+        showError('Takım silinirken bir hata oluştu.');
     });
 } 

@@ -207,11 +207,11 @@ function makeUserAdmin(userId, userName) {
         return response.json();
     })
     .then(data => {
-        alert(`${userName} başarıyla admin yapıldı.`);
+                    showSuccess(`${userName} başarıyla admin yapıldı.`);
         loadUsers(); // Kullanıcı listesini yenile
     })
     .catch(error => {
-        alert(`Kullanıcı admin yapılırken bir hata oluştu: ${error.message}`);
+                    showError(`Kullanıcı admin yapılırken bir hata oluştu: ${error.message}`);
     });
 }
 
@@ -241,10 +241,10 @@ function deleteUser(userId, userName) {
         return response.json();
     })
     .then(data => {
-        alert(`${userName} başarıyla silindi.`);
+                    showSuccess(`${userName} başarıyla silindi.`);
         loadUsers(); // Kullanıcı listesini yenile
     })
     .catch(error => {
-        alert(`Kullanıcı silinirken bir hata oluştu: ${error.message}`);
+                    showError(`Kullanıcı silinirken bir hata oluştu: ${error.message}`);
     });
 } 
