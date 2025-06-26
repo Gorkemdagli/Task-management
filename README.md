@@ -280,27 +280,6 @@ npm test
 
 ## 🚀 Deployment
 
-### Heroku'ya Deploy
-1. Heroku hesabı oluşturun
-2. Heroku CLI kurun
-3. Proje klasöründe:
-```bash
-heroku create your-app-name
-heroku config:set MONGODB_URI=your-mongodb-uri
-heroku config:set JWT_SECRET=your-jwt-secret
-heroku config:set NODE_ENV=production
-git push heroku main
-```
-
-### Docker ile Deploy
-```bash
-# Docker image oluştur
-docker build -t task-management-app .
-
-# Container çalıştır
-docker run -p 3000:3000 --env-file .env task-management-app
-```
-
 ## 🤝 Katkıda Bulunma
 
 1. Fork edin
