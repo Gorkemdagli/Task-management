@@ -2,8 +2,8 @@ const mongoose = require('mongoose');
 
 const connectDB = async () => {
   try {
-    // Test ortamında memory server kullan
-    if (process.env.NODE_ENV === 'test') {
+    // Sadece Jest test ortamında memory server kullan
+    if (process.env.NODE_ENV === 'test' && process.env.JEST_WORKER_ID) {
       return;
     }
 

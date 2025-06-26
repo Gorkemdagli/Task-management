@@ -48,21 +48,27 @@ app.use(errorHandler);
 // Port dinleme
 const PORT = process.env.PORT || 3000;
 
-if (process.env.NODE_ENV !== 'test') {
+// Test ortamında jest çalışmıyorsa sunucuyu başlat
+if (process.env.NODE_ENV !== 'test' || (process.env.NODE_ENV === 'test' && !process.env.JEST_WORKER_ID)) {
   // MongoDB bağlantısını başlat
   connectDB().then(() => {
     app.listen(PORT, () => {
       console.log(`🚀 Sunucu ${PORT} portunda çalışıyor`);
+      console.log(`📊 Ortam: ${process.env.NODE_ENV || 'development'}`);
       console.log(`📚 Swagger dokümantasyonu: http://localhost:${PORT}/api-docs`);
       console.log(`🌐 Uygulama: http://localhost:${PORT}`);
+      
+      if (process.env.NODE_ENV === 'test') {
+        console.log(`🧪 Test ortamında çalışıyor - Gerçek veritabanı kullanılıyor`);
+      }
     });
   }).catch((error) => {
     console.error('Sunucu başlatılırken hata oluştu:', error);
     process.exit(1);
   });
 } else {
-  // Test modunda da bilgileri göster
-  console.log(`🧪 Test modu aktif - Port: ${PORT}`);
+  // Jest test ortamında bilgileri göster
+  console.log(`🧪 Jest test modu aktif - Port: ${PORT}`);
   console.log(`📊 NODE_ENV: ${process.env.NODE_ENV}`);
 }
 
